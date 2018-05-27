@@ -1,0 +1,42 @@
+<!-- <div class="card text-center">
+  <div class="card-header">
+    模拟登录页面
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">Special title treatment</h5>
+    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+    <a href="#" class="btn btn-primary">Go somewhere</a>
+    <button mat-button>Click me!</button>
+  </div>
+  <div class="card-footer text-muted">
+    {{currentData | date: "yyyy-MM-dd HH:mm:ss"}}
+  </div>
+</div> -->
+
+<form [formGroup]="loginGroup" class="login-div">
+  <mat-card class="login-card">
+    <mat-card-header>
+      <div mat-card-avatar class="example-header-image"></div>
+      <mat-card-title>登录模块</mat-card-title>
+      <mat-card-subtitle>登录信息录入并提交</mat-card-subtitle>
+    </mat-card-header>
+    <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
+    <mat-card-content>
+        <mat-form-field class="full-width">
+          <!-- <span matPrefix>XiangXu.</span> -->
+          <input matInput type="text" placeholder="请输入你的邮箱" formControlName="username" />
+          <!-- <span matSuffix>@163.com</span> -->
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+            <input matInput type="password" placeholder="请输入你的密码" formControlName="password" />
+        </mat-form-field>
+
+        <button mat-raised-button type="button" (click)="on_login_click()">登录</button>
+    </mat-card-content>
+    <mat-card-actions class="text-right">
+      <p>还未注册？&nbsp;<a href="">立即注册</a></p>
+      <p>忘记密码？&nbsp;<a href="">找回密码</a></p>
+    </mat-card-actions>
+  </mat-card>
+</form>
