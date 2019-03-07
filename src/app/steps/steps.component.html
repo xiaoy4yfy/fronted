@@ -1,0 +1,40 @@
+<div>
+  <div>
+    <button nz-button [nzType]="'primary'" (click)="showModal()"><span>流程申请</span></button>
+    <nz-modal [(nzVisible)]="isVisible" nzTitle="流程申请" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+      <div>
+        <span>标题：</span><br>
+        <input nz-input placeholder="Basic usage" [(ngModel)]="stepsModel.title">
+        <span>内容：</span><br>
+        <textarea rows="4" nz-input [(ngModel)]="stepsModel.content"></textarea>
+      </div>
+      <br>
+    </nz-modal>
+  </div>
+  <br>
+  <div>
+    <div>
+      <span>9.1举行班级户外活动</span>
+      <p>fadfdfafdafafadfafafafafdadf</p>
+    </div>
+
+    <br>
+    <div>
+      <nz-steps [nzCurrent]="1" [nzProgressDot]="progressTemplate">
+        <nz-step nzTitle="已发送" nzDescription=""></nz-step>
+        <nz-step nzTitle="待审核" nzDescription=""></nz-step>
+        <nz-step nzTitle="进行中" nzDescription=""></nz-step>
+        <nz-step nzTitle="完成" nzDescription=""></nz-step>
+      </nz-steps>
+      <ng-template #progressTemplate let-dot let-status="status" let-index="index">
+        <nz-popover nzContent="steps {{index}} status: {{status}}">
+        <span nz-popover style="margin-left: -100%;">
+          <ng-template [ngTemplateOutlet]="dot"></ng-template>
+        </span>
+        </nz-popover>
+      </ng-template>
+    </div>
+  </div>
+
+
+</div>

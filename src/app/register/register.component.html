@@ -1,0 +1,48 @@
+<div>
+  <form [formGroup]="registGroup" class="login-div">
+    <mat-card class="login-card">
+      <mat-card-header>
+        <div mat-card-avatar class="example-header-image"></div>
+        <mat-card-title>注册</mat-card-title>
+      </mat-card-header>
+      <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
+      <mat-card-content>
+        <mat-form-field class="full-width">
+          <!-- <span matPrefix>XiangXu.</span> -->
+          <input matInput type="text" placeholder="用户名" formControlName="username" />
+          <!-- <span matSuffix>@163.com</span> -->
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+          <input matInput type="password" placeholder="密码" formControlName="password" />
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+          <input matInput type="text" placeholder="昵称" formControlName="name" />
+        </mat-form-field>
+        <mat-form-field class="full-width">
+          <input matInput type="text" placeholder="性别: 男/女" formControlName="sex" />
+        </mat-form-field>
+        <mat-form-field class="full-width">
+          <input matInput type="text" placeholder="角色：学生/老师/班主任/管理员" formControlName="role" />
+        </mat-form-field>
+        <br>
+        <button style="float: right;margin-right: 1rem" nz-button [nzType]="'default'" type="button" (click)="on_login_click()">注册</button>
+      </mat-card-content>
+    </mat-card>
+  </form>
+  <br>
+  <div>
+    <nz-modal [(nzVisible)]="isVisible" nzTitle="请输入科目" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+      <div>
+        <span>科目：</span><br>
+        <input nz-input name="subj" placeholder="Basic usage" [(ngModel)]="subject">
+      </div>
+      <br>
+    </nz-modal>
+  </div>
+</div>
+
+
+
+

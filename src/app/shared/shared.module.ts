@@ -23,9 +23,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule,
     NgZorroAntdModule.forRoot(),
     MatButtonModule,
-    MatCardModule,    
-    MatInputModule
-  ], 
+    MatCardModule,
+    MatInputModule,
+  ],
   exports: [
     CommonModule,
     FormsModule,
@@ -36,5 +36,5 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatInputModule
   ],
   declarations: []
-}) 
+})
 export class SharedModule { }

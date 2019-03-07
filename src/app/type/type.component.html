@@ -1,0 +1,29 @@
+<div>
+  <div>
+    <button nz-button [nzType]="'primary'" (click)="showModal()"><span>安排职位</span></button>
+    <nz-modal [(nzVisible)]="isVisible" nzTitle="安排职位" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+      <div>
+        <span>请选择学生：</span><br>
+
+        <nz-select style="width: 200px;" nzShowSearch nzAllowClear nzPlaceHolder="Select a person" [(ngModel)]="selectedValue">
+          <nz-option *ngFor="let item of studentList"  [nzLabel]="item.name" [nzValue]="item.name"></nz-option>
+        </nz-select>
+      </div>
+      <br>
+      <span>职位：</span>
+      <input nz-input placeholder="Basic usage" [(ngModel)]="type">
+    </nz-modal>
+  </div>
+  <br>
+  <div>
+    <ul>
+      <li><span>小明：</span><span>班长</span></li>
+      <li><span>小明：</span><span>班长</span></li>
+      <li><span>小明：</span><span>班长</span></li>
+      <li><span>小明：</span><span>班长</span></li>
+    </ul>
+  </div>
+  <div>
+    <span>你的职位： 班长</span>
+  </div>
+</div>

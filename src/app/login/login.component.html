@@ -17,14 +17,13 @@
   <mat-card class="login-card">
     <mat-card-header>
       <div mat-card-avatar class="example-header-image"></div>
-      <mat-card-title>登录模块</mat-card-title>
-      <mat-card-subtitle>登录信息录入并提交</mat-card-subtitle>
+      <mat-card-title>登录</mat-card-title>
     </mat-card-header>
     <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
     <mat-card-content>
         <mat-form-field class="full-width">
           <!-- <span matPrefix>XiangXu.</span> -->
-          <input matInput type="text" placeholder="请输入你的邮箱" formControlName="username" />
+          <input matInput type="text" placeholder="请输入用户名" formControlName="username" />
           <!-- <span matSuffix>@163.com</span> -->
         </mat-form-field>
 
@@ -33,10 +32,9 @@
         </mat-form-field>
 
         <button mat-raised-button type="button" (click)="on_login_click()">登录</button>
+       <button nz-button  (click)="register()" style="float: right">注册</button>
     </mat-card-content>
-    <mat-card-actions class="text-right">
-      <p>还未注册？&nbsp;<a href="">立即注册</a></p>
-      <p>忘记密码？&nbsp;<a href="">找回密码</a></p>
-    </mat-card-actions>
+
   </mat-card>
 </form>
+

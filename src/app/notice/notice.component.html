@@ -1,0 +1,25 @@
+<div>
+  <div>
+    <div>
+      <button nz-button [nzType]="'primary'" (click)="showModal()"><span>发布公告</span></button>
+      <nz-modal [(nzVisible)]="isVisible" nzTitle="发布公告" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+        <div>
+          <span>标题：</span><br>
+          <input nz-input placeholder="Basic usage" [(ngModel)]="notice.title">
+        <span>内容：</span><br>
+          <textarea rows="4" nz-input [(ngModel)]="notice.value"></textarea>
+        </div>
+        <br>
+      </nz-modal>
+    </div>
+  </div>
+  <br>
+  <div>
+    已发布公告：
+    <ul>
+      <li><span>考试通知:</span><span>9月1号举行期末考试</span></li>
+      <li><span>放假通知:</span><span>6月28号，全体师生放暑假</span></li>
+    </ul>
+  </div>
+
+</div>

@@ -1,0 +1,25 @@
+<div>
+  <div>
+    <button nz-button [nzType]="'primary'" (click)="showModal()"><span>发布任务</span></button>
+    <nz-modal [(nzVisible)]="isVisible" nzTitle="发布任务" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+      <!--<span>标题：</span> <input nz-input placeholder="Basic usage" [(ngModel)]="title">-->
+      <span>内容：</span><input nz-input placeholder="Basic usage" [(ngModel)]="content">
+    </nz-modal>
+  </div>
+  <br>
+  <br>
+  <div>
+    <nz-list  *ngIf="list.length > 0" [nzDataSource]="list" nzBordered nzSize="small"
+             [nzHeader]="'任务'"
+              [nzRenderItem]="item" >
+      <ng-template #item let-item>
+        <nz-list-item [nzContent]="item" >
+          <div style="float: right; margin-right: 1rem">
+            <button nz-button nzType="'default'" [nzSize]="'small'" style="margin-right: .5rem" (click)="edit()">edit</button>
+            <button nz-button nzType="'default'" [nzSize]="'small'" (click)="delete()">delete</button>
+          </div>
+        </nz-list-item>
+      </ng-template>
+    </nz-list>
+  </div>
+</div>

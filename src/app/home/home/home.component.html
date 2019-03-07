@@ -30,19 +30,27 @@
             </li>
           </ul>
         </li>
-        <li nz-submenu>
-          <span title><i class="anticon anticon-team"></i><span class="nav-text">Team</span></span>
-          <ul>
-            <li nz-menu-item>Team 1</li>
-            <li nz-menu-item>Team 2</li>
-          </ul>
-        </li>
-        <li nz-menu-item><span><i class="anticon anticon-file"></i><span class="nav-text">File</span></span></li>
+        <li nz-menu-item nz-tooltip nzPlacement="right" ><span><i nz-icon type="block" theme="outline"></i>
+          <a [routerLink]="['/home/work']">任务</a>
+        </span></li>
+        <li nz-menu-item nz-tooltip nzPlacement="right" ><span><i nz-icon type="audit" theme="outline"></i>
+          <a [routerLink]="['/home/type']">职位</a>
+        </span></li>
+        <li nz-menu-item nz-tooltip nzPlacement="right" ><span><i nz-icon type="calculator" theme="outline"></i>
+          <a [routerLink]="['/home/gride']">分数</a>
+        </span></li>
+        <li nz-menu-item nz-tooltip nzPlacement="right" ><span><i nz-icon type="gateway" theme="outline"></i>
+        <a [routerLink]="['/home/steps']">流程</a>
+        </span></li>
+        <li nz-menu-item nz-tooltip nzPlacement="right" ><span><i nz-icon type="notification" theme="outline"></i>
+        <a [routerLink]="['/home/notice']">公告</a>
+        </span></li>
       </ul>
     </nz-sider>
     <nz-layout>
       <nz-header style="background: #fff; padding:0;">
         <i class="anticon trigger" [class.anticon-menu-fold]="!isCollapsed" [class.anticon-menu-unfold]="isCollapsed" (click)="isCollapsed=!isCollapsed"></i>
+        <button nz-button nzType="‘default’" style="float: right; margin-top: 1%;margin-right: 3%" (click)="forumIs = !forumIs">论坛</button>
       </nz-header>
       <nz-content style="margin:0 16px;">
         <nz-breadcrumb style="margin:16px 0;">
@@ -50,70 +58,84 @@
           <nz-breadcrumb-item>Bill</nz-breadcrumb-item>
         </nz-breadcrumb>
         <div style="padding:24px; background: #fff; min-height: 360px;">
-          
-          》 主页面
           <router-outlet></router-outlet>
-
-        <!-- 模拟内容 start  -->
-        <!-- <div class="card text-center">
-          <div class="card-header">
-            模拟主页面
-          </div>
-          <div class="card-body">
-            <h5 class="card-title">Special title treatment</h5>
-            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-          </div>
-          <div class="card-footer text-muted">
-            {{currentData | date: "yyyy-MM-dd HH:mm:ss"}}
-          </div>
-        </div>
-        <div class="card text-center">
-          <div class="card-header">
-            模拟主页面
-          </div>
-          <div class="card-body">
-            <h5 class="card-title">Special title treatment</h5>
-            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-          </div>
-          <div class="card-footer text-muted">
-            {{currentData | date: "yyyy-MM-dd HH:mm:ss"}}
-          </div>
-        </div>
-          <div class="card text-center">
-    <div class="card-header">
-      模拟主页面
-    </div>
-    <div class="card-body">
-      <h5 class="card-title">Special title treatment</h5>
-      <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-      <a href="#" class="btn btn-primary">Go somewhere</a>
-    </div>
-    <div class="card-footer text-muted">
-      {{currentData | date: "yyyy-MM-dd HH:mm:ss"}}
-    </div>
-  </div>
-  <div class="card text-center">
-    <div class="card-header">
-      模拟主页面
-    </div>
-    <div class="card-body">
-      <h5 class="card-title">Special title treatment</h5>
-      <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-      <a href="#" class="btn btn-primary">Go somewhere</a>
-    </div>
-    <div class="card-footer text-muted">
-      {{currentData | date: "yyyy-MM-dd HH:mm:ss"}}
-    </div>
-  </div> -->
- <!-- 模拟内容 end -->
 
         </div>
       </nz-content>
-      <nz-footer style="text-align: center;">庠序 &copy; 川渝足智</nz-footer>
+      <nz-footer style="text-align: center;"> ant Design &copy;2019 </nz-footer>
     </nz-layout>
+
+    <nz-sider *ngIf="forumIs" nzCollapsible style="background-color: white" [nzWidth]="500" [(nzCollapsed)]="!forumIs"  [nzTrigger]="triggerTemplate">
+      <div style="margin-top: 1rem;margin-left: 1rem"><span>守夜人讨论区...</span><button nz-button type="'default'" style="margin-right: 1rem;float: right" (click)="showModal()">发帖</button></div>
+      <nz-list
+        [nzDataSource]="data"
+        [nzItemLayout]="'vertical'"
+        [nzRenderItem]="item"
+        [nzPagination]="pagination"
+        [nzFooter]="footer">
+        <ng-template #item let-item>
+          <nz-list-item [nzContent]="item.content" [nzActions]="[starAction,likeAction,msgAction]" [nzExtra]="extra" >
+            <ng-template #starAction><i nz-icon type="star-o" style="margin-right: 8px;"></i> 156</ng-template>
+            <ng-template #likeAction><i nz-icon type="like-o" style="margin-right: 8px;"></i> 156</ng-template>
+            <ng-template #msgAction><i nz-icon type="message" style="margin-right: 8px;"></i> 2</ng-template>
+            <nz-list-item-meta
+              [nzAvatar]="item.avatar"
+              [nzTitle]="nzTitle"
+              [nzDescription]="item.description">
+              <ng-template #nzTitle><a  (click)="showModal2()" >{{item.title}}</a></ng-template>
+            </nz-list-item-meta>
+
+          </nz-list-item>
+        </ng-template>
+        <ng-template #footer>
+          <div><b>ant design</b> footer part</div>
+        </ng-template>
+        <ng-template #pagination>
+          <nz-pagination [nzPageIndex]="1" [nzTotal]="50" (nzPageIndexChange)="loadData($event)"></nz-pagination>
+        </ng-template>
+      </nz-list>
+    </nz-sider>
+    <nz-modal [(nzVisible)]="isVisible" nzTitle="守夜人" (nzOnCancel)="handleCancel2()" (nzOnOk)="handleOk2()">
+      <div>
+        <span>标题：</span><br>
+        <input nz-input placeholder="Basic usage" [(ngModel)]="title"><br><br>
+       <span>内容：</span><br>
+        <textarea rows="4" nz-input [(ngModel)]="content"></textarea>
+      </div>
+      <br>
+    </nz-modal>
+    <nz-modal [nzWidth]="1000" [(nzVisible)]="detailIs" nzTitle="守夜人" (nzOnCancel)="handleCancel2()" (nzOnOk)="handleOk2()">
+      <div>
+        <!--<nz-list *ngIf="data.length" [nzDataSource]="data" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">
+          <ng-template #item let-item>
+            <nz-comment [nzAuthor]="item.author" [nzDatetime]="item.displayTime">
+              <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="item.avatar"></nz-avatar>
+              <nz-comment-content>
+                <p>{{item.content}}</p>
+              </nz-comment-content>
+            </nz-comment>
+          </ng-template>
+        </nz-list>
+        <nz-comment>
+          <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="user.avatar"></nz-avatar>
+          <nz-comment-content>
+            <nz-form-item>
+              <textarea [(ngModel)]="inputValue" nz-input rows="4"></textarea>
+            </nz-form-item>
+            <nz-form-item>
+              <button nz-button nzType="primary" [nzLoading]="submitting" [disabled]="!inputValue" (click)="handleSubmit()">
+                Add Comment
+              </button>
+            </nz-form-item>
+          </nz-comment-content>
+        </nz-comment>-->
+
+      </div>
+      <br>
+    </nz-modal>
   </nz-layout>
   <ng-template #trigger>
     <i class="anticon anticon-up"></i>
   </ng-template>
+
+

@@ -3,12 +3,22 @@ import {  } from '@angular/common';
 import { HomeComponent } from './home/home.component';
 import { SharedModule } from '../shared/shared.module';
 import { HomeRoutesModule } from './home.routes.module';
+import {NgZorroAntdModule} from 'ng-zorro-antd';
+import {WorkComponent} from '../work/work.component';
+import {TypeComponent} from '../type/type.component';
+import {GrideComponent} from '../gride/gride.component';
+import {StepsComponent} from '../steps/steps.component';
+import {NoticeComponent} from '../notice/notice.component';
+import {HttpClient} from '@angular/common/http';
+import {UserService} from '../userservice/userService';
 
 @NgModule({
   imports: [
     SharedModule,
-    HomeRoutesModule
+    HomeRoutesModule,
+    NgZorroAntdModule,
   ],
-  declarations: [HomeComponent]
+  declarations: [HomeComponent, WorkComponent, TypeComponent, GrideComponent, StepsComponent, NoticeComponent],
+  providers: [ UserService],
 })
 export class HomeModule { }

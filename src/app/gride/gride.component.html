@@ -1,0 +1,29 @@
+<div>
+  <div>
+    <div>
+      <button nz-button [nzType]="'primary'" (click)="showModal()"><span>打分</span></button>
+      <nz-modal [(nzVisible)]="isVisible" nzTitle="打分" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+        <div>
+          <span>请选择学生：</span><br>
+
+          <nz-select style="width: 200px;" nzShowSearch nzAllowClear nzPlaceHolder="Select a person" [(ngModel)]="selectedValue">
+            <nz-option *ngFor="let item of studentList"  [nzLabel]="item.name" [nzValue]="item.name"></nz-option>
+          </nz-select>
+        </div>
+        <br>
+        <span>分数：</span>
+        <input nz-input placeholder="Basic usage" [(ngModel)]="gride">
+      </nz-modal>
+    </div>
+  </div>
+  <br>
+  <div>
+    你的分数：
+    <ul>
+      <li><span>语文:</span><span>99</span></li>
+      <li><span>数学:</span><span>99</span></li>
+      <li><span>英语:</span><span>99</span></li>
+    </ul>
+  </div>
+
+</div>

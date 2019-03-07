@@ -16,7 +16,21 @@
     margin: 16px;
   }
 
+.count {
+  padding-left: 8px;
+  cursor: auto;
+}
 
+a {
+  color: white;
+}
+
+::ng-deep .ant-list-vertical .ant-list-item  {
+  padding: 1rem;
+}
+::ng-deep .ant-list-item-meta-description {
+  cursor: pointer;
+}
 
 /* .ant-layout{
     height: 100%;

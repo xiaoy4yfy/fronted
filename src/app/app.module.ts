@@ -8,22 +8,28 @@ import { AppComponent } from './app.component';
 import { AppRoutesModule } from './app.routes.module';
 import { LoginComponent } from './login/login.component';
 import { SharedModule } from './shared/shared.module';
+import {RegisterComponent} from './register/register.component';
+import {HttpClientModule} from '@angular/common/http';
+import {UserService} from './userservice/userService';
+import {HomeModule} from './home/home.module';
 
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     SharedModule,
     AppRoutesModule,
-    
+    HttpClientModule,
+    HomeModule,
+
   ],
-  providers: [],
+  providers: [UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
