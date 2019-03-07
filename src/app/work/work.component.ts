@@ -3,6 +3,7 @@ import {FormGroup, FormControl, Validators} from '@angular/forms';
 import { Router } from '@angular/router';
 import {HttpClient} from '@angular/common/http';
 import {UserService} from '../userservice/userService';
+import {LocalStorageService} from 'ngx-webstorage';
 
 
 
@@ -25,19 +26,27 @@ export class WorkComponent implements OnInit {
 
   currentData: Date;
 
+  scope: number;
+
   constructor(
-    private _router: Router, private http: HttpClient, private userService: UserService
+    private _router: Router, private http: HttpClient, private userService: UserService,private storage: LocalStorageService
   ) { }
 
   ngOnInit() {
-
+    this.getList();
+    this.scope = this.storage.retrieve('user')['role'];
   }
 
   getList(){
-   /*this.http.get(this.userService.tempUrl)
+   this.http.get(this.userService.tempUrl+'/v1/task/findAll')
      .subscribe( data =>{
-       this.list = data['data'];
-     });*/
+       if(data['status'] === 'success'){
+         console.log(data);
+         this.list = data['data'];
+       }else {
+       }
+
+     });
   }
 
   showModal(): void {
@@ -46,17 +55,17 @@ export class WorkComponent implements OnInit {
 
   // 创建任务 传入user对象
   handleOk(): void {
-    console.log(this.workValue);
     this.isVisible = false;
-    this.workList.push(this.content);
-    this.list = [...this.workList];
-   /* this.http.post(this.userService.tempUrl,
+    this.http.post(this.userService.tempUrl+'/v1/task/add',
    {title: this.title,
-    content: this.content
-     creater: this.user})
+        content: this.content,
+        creater: this.storage.retrieve('user')})
       .subscribe(data =>{
-
-      })*/
+          if(data['status'] === 'success'){
+              this.getList()
+          }else {
+          }
+      })
   }
 
   handleCancel(): void {
@@ -75,15 +84,16 @@ export class WorkComponent implements OnInit {
 
       })*/
   }
-  delete(){
-    alert('delete');
-    /* this.http.post(this.userService.tempUrl,
- {title: this.title,
-  content: this.content
-   creater: this.user})
-    .subscribe(data =>{
+  delete(data){
+    console.log(data);
 
-    })*/
+     this.http.delete(this.userService.tempUrl+'/v1/task/drop?id='+data['id'],)
+    .subscribe(data =>{
+          if(data['status'] === 'success'){
+              this.getList();
+          }else {
+          }
+    })
   }
 
 }

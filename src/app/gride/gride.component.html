@@ -1,13 +1,13 @@
 <div>
   <div>
-    <div>
+    <div *ngIf="user.role !== 1 ">
       <button nz-button [nzType]="'primary'" (click)="showModal()"><span>打分</span></button>
       <nz-modal [(nzVisible)]="isVisible" nzTitle="打分" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
         <div>
           <span>请选择学生：</span><br>
 
-          <nz-select style="width: 200px;" nzShowSearch nzAllowClear nzPlaceHolder="Select a person" [(ngModel)]="selectedValue">
-            <nz-option *ngFor="let item of studentList"  [nzLabel]="item.name" [nzValue]="item.name"></nz-option>
+          <nz-select style="width: 200px;" nzShowSearch nzAllowClear nzPlaceHolder="Select a person" [(ngModel)]="selectValue">
+            <nz-option *ngFor="let item of studentList"  [nzLabel]="item.name" [nzValue]="item"></nz-option>
           </nz-select>
         </div>
         <br>
@@ -17,13 +17,34 @@
     </div>
   </div>
   <br>
-  <div>
-    你的分数：
+  <div *ngIf="user.role !== 1 " >
+    所有学生分数：
+    <br>
+     科目： {{subject}}
     <ul>
-      <li><span>语文:</span><span>99</span></li>
-      <li><span>数学:</span><span>99</span></li>
-      <li><span>英语:</span><span>99</span></li>
+      <li style="margin-top: .5rem" *ngFor="let s of studentList">
+        <div>
+          <span>{{s.name+'-'}}</span>
+          <ng-container *ngFor="let item of score">
+            <span  *ngIf="item.subject === subject && s.name === item.student.name">{{item.score}} <button nz-button style="margin-left: 2rem" [nzType]="'default'" (click)="editScore(item)">edit</button></span>
+          </ng-container>
+        </div>
+      </li>
     </ul>
   </div>
+  <div *ngIf="user.role === 1">
+       <ul>
+         <li *ngFor="let item of score">
+            <span *ngIf="item.student.name === user.name">
+              <span>{{item.subject+'--'+item.score}}</span>
+            </span>
+         </li>
+       </ul>
+  </div>
+  <nz-modal [(nzVisible)]="isVisible2" nzTitle="打分" (nzOnCancel)="handleCancel2()" (nzOnOk)="handleOk2()">
+    <br>
+    <span>分数：</span>
+    <input nz-input placeholder="Basic usage" [(ngModel)]="gride">
+  </nz-modal>
 
 </div>

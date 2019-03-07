@@ -12,8 +12,14 @@
     </div>
   </div> -->
   <nz-layout>
-    <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="triggerTemplate">
+    <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" >
       <div class="logo">
+        <nz-avatar [nzIcon]="'user'" style="background-color:#0e7cd0;">adasda</nz-avatar>
+        <span style="color: white;font-size: .6rem">{{user.name+':'}}</span><span style="color: white;font-size: .6rem">{{user.position ? user.position : ''}}</span>
+        <span style="color: white;font-size: .6rem" *ngIf="user.role === 3">班主任</span>
+        <span style="color: white;font-size: .6rem" *ngIf="user.role === 2">老师</span>
+        <span style="color: white;font-size: .6rem" *ngIf="user.role === 4">管理员</span>
+        <span style="color: white;font-size: .6rem" *ngIf="user.role === 1">学生</span>
       </div>
       <ul nz-menu [nzTheme]="'dark'" [nzMode]="'inline'" [nzInlineCollapsed]="isCollapsed">
         <li nz-submenu>
@@ -22,27 +28,21 @@
             <li nz-menu-item>
               <a [routerLink]="['/home/user/userHome']">用户主页</a>
             </li>
-            <li nz-menu-item>
-              <a [routerLink]="['/home/user/userList']">用户列表</a>
-            </li>
-            <li nz-menu-item>
-              <a [routerLink]="['/home/user/userDetail']">用户列表</a>
-            </li>
           </ul>
         </li>
-        <li nz-menu-item nz-tooltip nzPlacement="right" ><span><i nz-icon type="block" theme="outline"></i>
+        <li *ngIf="user.role !== 4" nz-menu-item nz-tooltip nzPlacement="right" ><span><i nz-icon type="block" theme="outline"></i>
           <a [routerLink]="['/home/work']">任务</a>
         </span></li>
-        <li nz-menu-item nz-tooltip nzPlacement="right" ><span><i nz-icon type="audit" theme="outline"></i>
+        <li *ngIf="user.role !== 1 && user.role !== 4" nz-menu-item nz-tooltip nzPlacement="right" ><span><i nz-icon type="audit" theme="outline"></i>
           <a [routerLink]="['/home/type']">职位</a>
         </span></li>
-        <li nz-menu-item nz-tooltip nzPlacement="right" ><span><i nz-icon type="calculator" theme="outline"></i>
+        <li *ngIf=" user.role !== 4 " nz-menu-item nz-tooltip nzPlacement="right" ><span><i nz-icon type="calculator" theme="outline"></i>
           <a [routerLink]="['/home/gride']">分数</a>
         </span></li>
-        <li nz-menu-item nz-tooltip nzPlacement="right" ><span><i nz-icon type="gateway" theme="outline"></i>
+        <li *ngIf="user.role !== 1 && user.role !== 4" nz-menu-item nz-tooltip nzPlacement="right" ><span><i nz-icon type="gateway" theme="outline"></i>
         <a [routerLink]="['/home/steps']">流程</a>
         </span></li>
-        <li nz-menu-item nz-tooltip nzPlacement="right" ><span><i nz-icon type="notification" theme="outline"></i>
+        <li *ngIf="user.role === 4" nz-menu-item nz-tooltip nzPlacement="right" ><span><i nz-icon type="notification" theme="outline"></i>
         <a [routerLink]="['/home/notice']">公告</a>
         </span></li>
       </ul>
@@ -50,7 +50,7 @@
     <nz-layout>
       <nz-header style="background: #fff; padding:0;">
         <i class="anticon trigger" [class.anticon-menu-fold]="!isCollapsed" [class.anticon-menu-unfold]="isCollapsed" (click)="isCollapsed=!isCollapsed"></i>
-        <button nz-button nzType="‘default’" style="float: right; margin-top: 1%;margin-right: 3%" (click)="forumIs = !forumIs">论坛</button>
+        <!--<button nz-button nzType="‘default’" style="float: right; margin-top: 1%;margin-right: 3%" (click)="forumIs = !forumIs">论坛</button>-->
       </nz-header>
       <nz-content style="margin:0 16px;">
         <nz-breadcrumb style="margin:16px 0;">
@@ -62,10 +62,10 @@
 
         </div>
       </nz-content>
-      <nz-footer style="text-align: center;"> ant Design &copy;2019 </nz-footer>
+
     </nz-layout>
 
-    <nz-sider *ngIf="forumIs" nzCollapsible style="background-color: white" [nzWidth]="500" [(nzCollapsed)]="!forumIs"  [nzTrigger]="triggerTemplate">
+    <nz-sider *ngIf="forumIs" nzCollapsible style="background-color: white" [nzWidth]="500" [(nzCollapsed)]="!forumIs"  >
       <div style="margin-top: 1rem;margin-left: 1rem"><span>守夜人讨论区...</span><button nz-button type="'default'" style="margin-right: 1rem;float: right" (click)="showModal()">发帖</button></div>
       <nz-list
         [nzDataSource]="data"

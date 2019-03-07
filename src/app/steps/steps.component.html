@@ -10,21 +10,52 @@
       </div>
       <br>
     </nz-modal>
+    <div style="margin-top: 1rem">
+      <span *ngIf="user.role === 3">待审核：</span>
+      <nz-list [nzDataSource]="stepList" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">
+        <ng-template #item let-item>
+          <nz-list-item>
+            <nz-list-item-meta
+              [nzTitle]="item.title"
+              [nzDescription]="item.describe">
+            </nz-list-item-meta>
+            <span *ngIf="item.status === 0 && user.role === 3 ">
+              <button style="margin-right: 1rem" nz-button [nzType]="'default'" [nzSize]="'small'" (click)="paas(item)">通过</button>
+              <button style="margin-right: 1rem" nz-button [nzType]="'default'" [nzSize]="'small'" (click)="unPass(item)">驳回</button>
+            </span>
+            <span *ngIf="item.status === 0 && user.role === 2">
+              <span style="color: #6f12fe;margin-right: 1rem"> 已发送</span>
+            </span>
+            <span *ngIf="item.status === 2 && user.role === 2">
+              <button style="margin-right: 1rem" nz-button [nzType]="'default'" [nzSize]="'small'" (click)="over(item)">完成</button>
+            </span>
+            <span *ngIf="item.status === 1 && item.audit ==='error'">
+              <span style="color: #f21924;margin-right: 1rem"> 已驳回</span>
+            </span>
+            <span *ngIf="item.status === 2">
+              <span style="color: #068bfe;margin-right: 1rem"> 进行中</span>
+            </span>
+            <span *ngIf="item.status === 3">
+              <span style="color: #1519fe;margin-right: 1rem"> 已结束</span>
+            </span>
+          </nz-list-item>
+        </ng-template>
+      </nz-list>
+    </div>
   </div>
   <br>
-  <div>
+  <div style="margin-top: 1.5rem" *ngFor="let item of stepList">
     <div>
-      <span>9.1举行班级户外活动</span>
-      <p>fadfdfafdafafadfafafafafdadf</p>
+      <span>{{item.title}}</span>
     </div>
 
     <br>
     <div>
-      <nz-steps [nzCurrent]="1" [nzProgressDot]="progressTemplate">
+      <nz-steps [nzCurrent]="item.status" [nzProgressDot]="progressTemplate" [nzStatus]="item.audit">
         <nz-step nzTitle="已发送" nzDescription=""></nz-step>
-        <nz-step nzTitle="待审核" nzDescription=""></nz-step>
+        <nz-step [nzTitle]="item.audit === 'error'? '审核不通过' : '已审核'" nzDescription=""></nz-step>
         <nz-step nzTitle="进行中" nzDescription=""></nz-step>
-        <nz-step nzTitle="完成" nzDescription=""></nz-step>
+        <nz-step nzTitle="已结束" nzDescription=""></nz-step>
       </nz-steps>
       <ng-template #progressTemplate let-dot let-status="status" let-index="index">
         <nz-popover nzContent="steps {{index}} status: {{status}}">

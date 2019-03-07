@@ -1,8 +1,8 @@
 <div>
-  <div>
+  <div *ngIf="scope != 1">
     <button nz-button [nzType]="'primary'" (click)="showModal()"><span>发布任务</span></button>
     <nz-modal [(nzVisible)]="isVisible" nzTitle="发布任务" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
-      <!--<span>标题：</span> <input nz-input placeholder="Basic usage" [(ngModel)]="title">-->
+      <span>标题：</span> <input nz-input placeholder="Basic usage" [(ngModel)]="title"><br>
       <span>内容：</span><input nz-input placeholder="Basic usage" [(ngModel)]="content">
     </nz-modal>
   </div>
@@ -13,10 +13,11 @@
              [nzHeader]="'任务'"
               [nzRenderItem]="item" >
       <ng-template #item let-item>
-        <nz-list-item [nzContent]="item" >
+        <nz-list-item [nzContent]="item.content" >
           <div style="float: right; margin-right: 1rem">
-            <button nz-button nzType="'default'" [nzSize]="'small'" style="margin-right: .5rem" (click)="edit()">edit</button>
-            <button nz-button nzType="'default'" [nzSize]="'small'" (click)="delete()">delete</button>
+          <!--  <button nz-button nzType="'default'" [nzSize]="'small'" style="margin-right: .5rem" (click)="edit()">edit</button>-->
+            <button *ngIf="scope !=1" nz-button nzType="'default'" [nzSize]="'small'" (click)="delete(item)">delete</button>
+            <span style="margin-left: 1rem">{{userService.timesClk(item.createDate)}}</span>
           </div>
         </nz-list-item>
       </ng-template>

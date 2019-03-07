@@ -3,9 +3,54 @@
     welcome
   </div>
   <div class="card-body">
-    <h5 class="card-title">Special title treatment</h5>
-    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-    <a href="#" class="btn btn-primary">Go somewhere</a>
+    <div nz-row nzType="flex">
+      <div nz-col [nzSpan]="12">
+        <nz-calendar>
+          <ul *nzDateCell="let date" class="events">
+            <ng-container [ngSwitch]="date.getDate()">
+              <ng-container *ngSwitchCase="8">
+                <li *ngFor="let item of listDataMap.eight">
+                  <nz-badge [nzStatus]="item.type" [nzText]="item.content"></nz-badge>
+                </li>
+              </ng-container>
+              <ng-container *ngSwitchCase="10">
+                <li *ngFor="let item of listDataMap.ten">
+                  <nz-badge [nzStatus]="item.type" [nzText]="item.content"></nz-badge>
+                </li>
+              </ng-container>
+              <ng-container *ngSwitchCase="11">
+                <li *ngFor="let item of listDataMap.eleven">
+                  <nz-badge [nzStatus]="item.type" [nzText]="item.content"></nz-badge>
+                </li>
+              </ng-container>
+            </ng-container>
+          </ul>
+          <ng-container *nzMonthCell="let month">
+            <div *ngIf="getMonthData(month) as monthData" class="notes-month">
+              <section>{{ monthData }}</section>
+              <span>Backlog number</span>
+            </div>
+          </ng-container>
+        </nz-calendar>
+      </div>
+      <div nz-col [nzSpan]="12">
+        班级通知
+        <div>
+          <nz-list [nzDataSource]="noticeList" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">
+            <ng-template #item let-item>
+              <nz-list-item>
+                <nz-list-item-meta
+                  [nzTitle]="item.title"
+                  [nzDescription]="item.content">
+                </nz-list-item-meta>
+                <span>{{userService.timesClk(item.createDate)}}</span>
+              </nz-list-item>
+            </ng-template>
+          </nz-list>
+        </div>
+      </div>
+    </div>
+
   </div>
   <div class="card-footer text-muted">
     {{currentDate | date : "yyyy-MM-dd HH:mm:ss"}}

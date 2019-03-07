@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {UserService} from '../../userservice/userService';
+import {LocalStorageService} from 'ngx-webstorage';
 
 @Component({
   selector: 'app-home',
@@ -13,15 +14,17 @@ export class HomeComponent implements OnInit {
   @Input() isCollapsed: boolean;
   loading: boolean = false;
 
-  constructor(private http: HttpClient, private userService: UserService) { }
+  constructor(private http: HttpClient, private userService: UserService, private storage: LocalStorageService) { }
 
   forumIs: boolean = false;
   content: any;
   title: any;
   detailIs: boolean = false;
+  user: any;
   ngOnInit() {
     this.currentData = new Date();
     this.loadData(1);
+    this.user = this.storage.retrieve('user');
   }
 
   data: any[] = [];

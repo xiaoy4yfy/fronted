@@ -3,6 +3,7 @@ import {FormGroup, FormControl, Validators} from '@angular/forms';
 import { Router } from '@angular/router';
 import {HttpClient} from '@angular/common/http';
 import {UserService} from '../userservice/userService';
+import {LocalStorageService} from 'ngx-webstorage';
 
 @Component({
   selector: 'app-work',
@@ -16,23 +17,31 @@ export class NoticeComponent implements OnInit {
   registGroup: FormGroup;
 
   currentData: Date;
+  user: any;
 
   constructor(
-    private _router: Router, private http: HttpClient, private userService: UserService
+    private _router: Router, private http: HttpClient, private userService: UserService,
+    private  storage: LocalStorageService
   ) { }
 
   ngOnInit() {
-
+    this.getAllNotice();
+    this.user = this.storage.retrieve('user')
   }
   studentList: any[] = [{name: '小米'},{name: '小明'},{name: 'xiaoy'}];
   notice: any = {title: '' , value: ''};
   isVisible: boolean = false;
+  noticeList: any[] = [];
 
   getAllNotice(){
-    /*  this.http.get(this.userService.tempUrl)
-    .subscribe{
+      this.http.get(this.userService.tempUrl+'/v1/notice/findAll')
+        .subscribe(data=>{
+          if(data['status'] === 'success'){
+            this.noticeList = data['data'];
+          }else {
 
-  }*/
+          }
+        })
   }
 
   showModal(): void {
@@ -40,15 +49,19 @@ export class NoticeComponent implements OnInit {
   }
 
   handleOk(): void {
-    alert(this.notice.title+'---'+this.notice.value);
+
     this.isVisible = false;
-    this.http.post(this.userService.tempUrl, {
-      title: '',
-      content: '',
-      creter: '',
+    this.http.post(this.userService.tempUrl+'/v1/notice/add', {
+      title: this.notice.title,
+      content: this.notice.value,
+      creter: this.user,
     })
       .subscribe(data =>{
+        if(data['status'] === 'success'){
+          this.getAllNotice();
+        }else {
 
+        }
       });
 
   }
@@ -56,6 +69,17 @@ export class NoticeComponent implements OnInit {
   handleCancel(): void {
 
     this.isVisible = false;
+  }
+
+  delete(data){
+    this.http.delete(this.userService.tempUrl+'/v1/notice/drop?id='+data.id)
+      .subscribe(data =>{
+        if(data['status'] === 'success'){
+          this.getAllNotice();
+        }else {
+
+        }
+      });
   }
 
 

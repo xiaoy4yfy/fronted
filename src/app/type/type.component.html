@@ -1,29 +1,53 @@
 <div>
-  <div>
-    <button nz-button [nzType]="'primary'" (click)="showModal()"><span>安排职位</span></button>
-    <nz-modal [(nzVisible)]="isVisible" nzTitle="安排职位" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
-      <div>
-        <span>请选择学生：</span><br>
+  <div *ngIf="user.role === 2 || user.role === 3">
+    <div>
+      <button nz-button [nzType]="'primary'" (click)="showModal()"><span>安排职位</span></button>
+      <nz-modal [(nzVisible)]="isVisible" nzTitle="安排职位" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+        <div>
+          <span>请选择学生：</span><br>
 
-        <nz-select style="width: 200px;" nzShowSearch nzAllowClear nzPlaceHolder="Select a person" [(ngModel)]="selectedValue">
-          <nz-option *ngFor="let item of studentList"  [nzLabel]="item.name" [nzValue]="item.name"></nz-option>
+          <nz-select style="width: 200px;" nzShowSearch nzAllowClear nzPlaceHolder="Select a person" [(ngModel)]="selectedValue">
+            <nz-option *ngFor="let item of studentList"  [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+          </nz-select>
+        </div>
+        <br>
+        <span>职位：</span>
+        <input nz-input placeholder="Basic usage" [(ngModel)]="type">
+      </nz-modal>
+    </div>
+    <br>
+    <div>
+      <ul>
+        <li *ngFor="let item of studentList"><span>{{item.name+':'}}</span><span>{{item?.position}}</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div *ngIf="user.role === 4">
+    <div>
+      <button nz-button [nzType]="'primary'" (click)="showModal2()"><span>安排职位</span></button>
+      <nz-modal [(nzVisible)]="isVisible2" nzTitle="安排职位" (nzOnCancel)="handleCancel2()" (nzOnOk)="handleOk2()">
+        <div>
+          <span>请选择老师：</span><br>
+
+          <nz-select style="width: 200px;" nzShowSearch nzAllowClear nzPlaceHolder="Select a person" [(ngModel)]="selectedValue2">
+            <nz-option *ngFor="let item of teachersList"  [nzLabel]="item.name" [nzValue]="item"></nz-option>
+          </nz-select>
+        </div>
+        <br>
+        <span>职位：</span><br>
+        <nz-select style="width: 200px;" nzShowSearch nzAllowClear nzPlaceHolder="Select a role" [(ngModel)]="teacherRole">
+          <nz-option  [nzLabel]="'老师'" [nzValue]="2"></nz-option>
+          <nz-option  [nzLabel]="'班主任'" [nzValue]="3"></nz-option>
         </nz-select>
-      </div>
-      <br>
-      <span>职位：</span>
-      <input nz-input placeholder="Basic usage" [(ngModel)]="type">
-    </nz-modal>
+      </nz-modal>
+    </div>
+    <div>
+      <ul>
+        <li *ngFor="let item of teachersList"><span>{{item.name+'---'}}</span><span>{{item.role === 2 ? '老师' : '班主任'}}</span></li>
+      </ul>
+    </div>
+
   </div>
-  <br>
-  <div>
-    <ul>
-      <li><span>小明：</span><span>班长</span></li>
-      <li><span>小明：</span><span>班长</span></li>
-      <li><span>小明：</span><span>班长</span></li>
-      <li><span>小明：</span><span>班长</span></li>
-    </ul>
-  </div>
-  <div>
-    <span>你的职位： 班长</span>
-  </div>
+
 </div>
