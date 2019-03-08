@@ -11,6 +11,7 @@ import {StepsComponent} from '../steps/steps.component';
 import {NoticeComponent} from '../notice/notice.component';
 import {HttpClient} from '@angular/common/http';
 import {UserService} from '../userservice/userService';
+import {EvaluationComponent} from '../evaluation/evaluation.component';
 
 @NgModule({
   imports: [
@@ -18,6 +19,7 @@ import {UserService} from '../userservice/userService';
     HomeRoutesModule,
     NgZorroAntdModule,
   ],
-  declarations: [HomeComponent, WorkComponent, TypeComponent, GrideComponent, StepsComponent, NoticeComponent],
+  declarations: [HomeComponent, WorkComponent, TypeComponent, GrideComponent, StepsComponent, NoticeComponent,
+                 EvaluationComponent ],
 })
 export class HomeModule { }

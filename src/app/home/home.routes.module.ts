@@ -6,6 +6,7 @@ import {TypeComponent} from '../type/type.component';
 import {GrideComponent} from '../gride/gride.component';
 import {StepsComponent} from '../steps/steps.component';
 import {NoticeComponent} from '../notice/notice.component';
+import {EvaluationComponent} from '../evaluation/evaluation.component';
 
 export const homeRoutes: Routes = [
     {
@@ -19,6 +20,7 @@ export const homeRoutes: Routes = [
             {path: 'gride', component: GrideComponent},
             {path: 'steps', component: StepsComponent},
             {path: 'notice', component: NoticeComponent},
+            {path: 'evaluation', component: EvaluationComponent},
             // { path: 'equip', loadChildren: '../equipment/equipment.module#EquipmentModule'}
         ]
     }

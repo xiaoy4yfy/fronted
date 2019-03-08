@@ -48,6 +48,9 @@
         <li *ngIf="user.role === 4" nz-menu-item nz-tooltip nzPlacement="right" ><span><i nz-icon type="notification" theme="outline"></i>
         <a [routerLink]="['/home/notice']">公告</a>
         </span></li>
+        <li *ngIf="user.role !== 4" nz-menu-item nz-tooltip nzPlacement="right" ><span><i nz-icon type="notification" theme="outline"></i>
+        <a [routerLink]="['/home/evaluation']">{{user.role === 1 ? '自我评价' : '每日总结'}}</a>
+        </span></li>
       </ul>
     </nz-sider>
     <nz-layout>
