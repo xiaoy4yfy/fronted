@@ -8,7 +8,6 @@ import {UserService} from '../userservice/userService';
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
-  providers: [UserService]
 })
 export class RegisterComponent implements OnInit {
 
@@ -29,6 +28,7 @@ export class RegisterComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    console.log(this.userService.tempUrl)
     this.currentData = new Date();
 
     this.registGroup = new FormGroup({
@@ -49,7 +49,7 @@ export class RegisterComponent implements OnInit {
       this.userModel['password'] = this.registGroup.get('password').value;
       this.userModel['name'] = this.registGroup.get('name').value;
 
-      if(this.userModel['sex'] === '男' || this.userModel['sex'] === '女'){
+      if(this.registGroup.get('sex').value === '男' || this.registGroup.get('sex').value === '女'){
         this.userModel['sex'] = this.registGroup.get('sex').value === '男' ? 1 : 0;
       }else {
         alert('请输入正确性别！');
@@ -71,7 +71,7 @@ export class RegisterComponent implements OnInit {
         alert('请按指定角色输入！');
       }
     } else {
-      alert('请填写所以相关参数！');
+      alert('请填写所有相关参数！');
     }
 
   }

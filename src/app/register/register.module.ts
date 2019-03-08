@@ -6,6 +6,7 @@ import {RegisterRoutesModule} from './register.routes.module';
 import {NgZorroAntdModule} from 'ng-zorro-antd';
 import {FormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
+import {UserService} from '../userservice/userService';
 
 @NgModule({
   imports: [

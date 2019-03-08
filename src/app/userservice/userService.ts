@@ -11,7 +11,7 @@ export class UserService {
 
   }
 
-  tempUrl: string = 'http://172.20.10.12:8080';
+  tempUrl: string = 'http://192.168.131.240:8080';
   temPId: string = 'c-ld79f:p-kq5gz';
   temCId: string = 'c-ld79f';
 

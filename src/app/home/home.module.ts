@@ -19,6 +19,5 @@ import {UserService} from '../userservice/userService';
     NgZorroAntdModule,
   ],
   declarations: [HomeComponent, WorkComponent, TypeComponent, GrideComponent, StepsComponent, NoticeComponent],
-  providers: [ UserService],
 })
 export class HomeModule { }

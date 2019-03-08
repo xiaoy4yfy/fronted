@@ -1,6 +1,6 @@
 <div>
   <div>
-    <div *ngIf="user.role !== 1 ">
+    <div *ngIf="user.role !== 1  && user.role !== 4 ">
       <button nz-button [nzType]="'primary'" (click)="showModal()"><span>打分</span></button>
       <nz-modal [(nzVisible)]="isVisible" nzTitle="打分" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
         <div>
@@ -17,11 +17,11 @@
     </div>
   </div>
   <br>
-  <div *ngIf="user.role !== 1 " >
-    所有学生分数：
+  <div *ngIf="user.role !== 1 && user.role !== 4 " >
+   <span>所有学生分数：</span>
     <br>
-     科目： {{subject}}
-    <ul>
+      <span *ngIf="user.role !== 1 && user.role !== 4 ">科目： {{subject}}</span>
+    <ul >
       <li style="margin-top: .5rem" *ngFor="let s of studentList">
         <div>
           <span>{{s.name+'-'}}</span>
@@ -40,6 +40,14 @@
             </span>
          </li>
        </ul>
+  </div>
+  <div *ngIf="user.role === 4">
+    <span>所有分数：</span><br>
+    <ul>
+      <li *ngFor="let item of score">
+          <span>{{item.student.name+'--'+item.subject+'--'+item.score}}</span>
+      </li>
+    </ul>
   </div>
   <nz-modal [(nzVisible)]="isVisible2" nzTitle="打分" (nzOnCancel)="handleCancel2()" (nzOnOk)="handleOk2()">
     <br>
