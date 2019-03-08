@@ -15,11 +15,14 @@
     <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" >
       <div class="logo">
         <nz-avatar [nzIcon]="'user'" style="background-color:#0e7cd0;">adasda</nz-avatar>
-        <span style="color: white;font-size: .6rem">{{user.name+':'}}</span><span style="color: white;font-size: .6rem">{{user.position ? user.position : ''}}</span>
-        <span style="color: white;font-size: .6rem" *ngIf="user.role === 3">班主任</span>
-        <span style="color: white;font-size: .6rem" *ngIf="user.role === 2">老师</span>
-        <span style="color: white;font-size: .6rem" *ngIf="user.role === 4">管理员</span>
-        <span style="color: white;font-size: .6rem" *ngIf="user.role === 1">学生</span>
+        <div style="display: inline-block" *ngIf="!isCollapsed">
+          <span style="color: white;font-size: .6rem">{{user.name+':'}}</span><span style="color: white;font-size: .6rem">{{user.position ? user.position : ''}}</span>
+          <span style="color: white;font-size: .6rem" *ngIf="user.role === 3">班主任</span>
+          <span style="color: white;font-size: .6rem" *ngIf="user.role === 2">老师</span>
+          <span style="color: white;font-size: .6rem" *ngIf="user.role === 4">管理员</span>
+          <span style="color: white;font-size: .6rem" *ngIf="user.role === 1">学生</span>
+        </div>
+
       </div>
       <ul nz-menu [nzTheme]="'dark'" [nzMode]="'inline'" [nzInlineCollapsed]="isCollapsed">
         <li nz-submenu>
@@ -33,10 +36,10 @@
         <li *ngIf="user.role !== 4" nz-menu-item nz-tooltip nzPlacement="right" ><span><i nz-icon type="block" theme="outline"></i>
           <a [routerLink]="['/home/work']">任务</a>
         </span></li>
-        <li *ngIf="user.role !== 1 && user.role !== 4" nz-menu-item nz-tooltip nzPlacement="right" ><span><i nz-icon type="audit" theme="outline"></i>
+        <li *ngIf="user.role !== 1" nz-menu-item nz-tooltip nzPlacement="right" ><span><i nz-icon type="audit" theme="outline"></i>
           <a [routerLink]="['/home/type']">职位</a>
         </span></li>
-        <li *ngIf=" user.role !== 4 " nz-menu-item nz-tooltip nzPlacement="right" ><span><i nz-icon type="calculator" theme="outline"></i>
+        <li  nz-menu-item nz-tooltip nzPlacement="right" ><span><i nz-icon type="calculator" theme="outline"></i>
           <a [routerLink]="['/home/gride']">分数</a>
         </span></li>
         <li *ngIf="user.role !== 1 && user.role !== 4" nz-menu-item nz-tooltip nzPlacement="right" ><span><i nz-icon type="gateway" theme="outline"></i>
@@ -50,7 +53,8 @@
     <nz-layout>
       <nz-header style="background: #fff; padding:0;">
         <i class="anticon trigger" [class.anticon-menu-fold]="!isCollapsed" [class.anticon-menu-unfold]="isCollapsed" (click)="isCollapsed=!isCollapsed"></i>
-        <!--<button nz-button nzType="‘default’" style="float: right; margin-top: 1%;margin-right: 3%" (click)="forumIs = !forumIs">论坛</button>-->
+        <button nz-button nzType="‘default’" style="float: right; margin-top: 1%;margin-right: 3%" (click)="logOut()">退出登录</button>
+        <button nz-button nzType="‘default’" style="float: right; margin-top: 1%;margin-right: 3%" (click)="forumIs = !forumIs">论坛</button>
       </nz-header>
       <nz-content style="margin:0 16px;">
         <nz-breadcrumb style="margin:16px 0;">
@@ -71,31 +75,29 @@
         [nzDataSource]="data"
         [nzItemLayout]="'vertical'"
         [nzRenderItem]="item"
-        [nzPagination]="pagination"
-        [nzFooter]="footer">
+        [nzPagination]="pagination">
         <ng-template #item let-item>
           <nz-list-item [nzContent]="item.content" [nzActions]="[starAction,likeAction,msgAction]" [nzExtra]="extra" >
             <ng-template #starAction><i nz-icon type="star-o" style="margin-right: 8px;"></i> 156</ng-template>
             <ng-template #likeAction><i nz-icon type="like-o" style="margin-right: 8px;"></i> 156</ng-template>
             <ng-template #msgAction><i nz-icon type="message" style="margin-right: 8px;"></i> 2</ng-template>
+            <ng-template #msgAction><i nz-icon type="message" style="margin-right: 8px;" *ngIf=" user.role === 4"></i>
+              <button nz-button style="margin-top: .5rem" nzType="‘default’" [nzSize]="'small'" (click)="deleteInvi(item)">删除帖子</button>
+            </ng-template>
             <nz-list-item-meta
               [nzAvatar]="item.avatar"
               [nzTitle]="nzTitle"
-              [nzDescription]="item.description">
-              <ng-template #nzTitle><a  (click)="showModal2()" >{{item.title}}</a></ng-template>
+              [nzDescription]="item.creater.name">
+              <ng-template #nzTitle><a  (click)="openModal(item)" >{{item.title}}</a></ng-template>
             </nz-list-item-meta>
-
           </nz-list-item>
         </ng-template>
-        <ng-template #footer>
-          <div><b>ant design</b> footer part</div>
-        </ng-template>
-        <ng-template #pagination>
-          <nz-pagination [nzPageIndex]="1" [nzTotal]="50" (nzPageIndexChange)="loadData($event)"></nz-pagination>
+        <ng-template #pagination >
+          <nz-pagination [nzPageSize]="4" [nzTotal]="inviList.length" (nzPageIndexChange)="loadData($event)"></nz-pagination>
         </ng-template>
       </nz-list>
     </nz-sider>
-    <nz-modal [(nzVisible)]="isVisible" nzTitle="守夜人" (nzOnCancel)="handleCancel2()" (nzOnOk)="handleOk2()">
+    <nz-modal [(nzVisible)]="isVisible" nzTitle="守夜人" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
       <div>
         <span>标题：</span><br>
         <input nz-input placeholder="Basic usage" [(ngModel)]="title"><br><br>
@@ -106,30 +108,30 @@
     </nz-modal>
     <nz-modal [nzWidth]="1000" [(nzVisible)]="detailIs" nzTitle="守夜人" (nzOnCancel)="handleCancel2()" (nzOnOk)="handleOk2()">
       <div>
-        <!--<nz-list *ngIf="data.length" [nzDataSource]="data" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">
+        <nz-list
+          [nzDataSource]="inviDetail"
+          [nzItemLayout]="'vertical'"
+          [nzRenderItem]="item"
+          [nzPagination]="pagination">
           <ng-template #item let-item>
-            <nz-comment [nzAuthor]="item.author" [nzDatetime]="item.displayTime">
-              <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="item.avatar"></nz-avatar>
-              <nz-comment-content>
-                <p>{{item.content}}</p>
-              </nz-comment-content>
-            </nz-comment>
+            <nz-list-item [nzContent]="item.content" [nzActions]="[starAction,likeAction,msgAction]" [nzExtra]="extra" >
+              <nz-list-item-meta
+                [nzAvatar]="item.avatar"
+                [nzTitle]="nzTitle"
+                [nzDescription]="item.creater.name">
+                <ng-template #nzTitle><a  (click)="showModal2(item)" >{{item.title}}</a></ng-template>
+              </nz-list-item-meta>
+            </nz-list-item>
           </ng-template>
+          <div style="margin: .5rem " *ngFor="let item of commentList">
+             <span style="color: #1890ff">{{item.creater.name+'  回复：'}}</span><p >{{item.content}}</p>
+            <button *ngIf="user.role === 4 || user.id === inviDetail[0].creater.id" nz-button style="margin-left: .5rem" nzType="‘default’" [nzSize]="'small'" (click)="deleteComment(item)">删除评论</button>
+          </div>
+          <div>
+            <textarea rows="4" nz-input [(ngModel)]="comment"></textarea>
+            <button nz-button style="margin-top: .5rem" nzType="‘default’" [nzSize]="'small'" (click)="addComment()">发送评论</button>
+          </div>
         </nz-list>
-        <nz-comment>
-          <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="user.avatar"></nz-avatar>
-          <nz-comment-content>
-            <nz-form-item>
-              <textarea [(ngModel)]="inputValue" nz-input rows="4"></textarea>
-            </nz-form-item>
-            <nz-form-item>
-              <button nz-button nzType="primary" [nzLoading]="submitting" [disabled]="!inputValue" (click)="handleSubmit()">
-                Add Comment
-              </button>
-            </nz-form-item>
-          </nz-comment-content>
-        </nz-comment>-->
-
       </div>
       <br>
     </nz-modal>
