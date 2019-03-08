@@ -2,6 +2,8 @@ import {Component, Input, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {UserService} from '../../userservice/userService';
 import {LocalStorageService} from 'ngx-webstorage';
+import {Router} from '@angular/router';
+import { distanceInWords } from 'date-fns';
 
 @Component({
   selector: 'app-home',
@@ -14,17 +16,25 @@ export class HomeComponent implements OnInit {
   @Input() isCollapsed: boolean;
   loading: boolean = false;
 
-  constructor(private http: HttpClient, private userService: UserService, private storage: LocalStorageService) { }
+  constructor(private http: HttpClient, private userService: UserService, private storage: LocalStorageService,
+              private router: Router) { }
 
   forumIs: boolean = false;
   content: any;
   title: any;
   detailIs: boolean = false;
   user: any;
+  inviList: any[] = [];
+  inviDetail: any[] = [{
+    title: `title1`,
+    creater: 'ccc',
+    content: '内容内容内容'}];
+  comment: string;
   ngOnInit() {
     this.currentData = new Date();
     this.loadData(1);
     this.user = this.storage.retrieve('user');
+    this.getAll();
   }
 
   data: any[] = [];
@@ -36,51 +46,45 @@ export class HomeComponent implements OnInit {
   isVisible: boolean = false;
 
   loadData(pi: number): void {
-    this.data = new Array(5).fill({}).map((_, index) => {
-      return {
-        href: 'http://ant.design',
-        title: `ant design part ${index} (page: ${pi})`,
-        avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-        description: 'Ant Design, a design language for background applications, is refined by Ant UED Team.',
-        content: 'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.'
-      };
-    });
+   this.data = [];
+   this.data = this.inviList.slice((pi-1)*4,pi*4);
   }
 
   getAll(){
-    /*  this.http.get(this.userService.tempUrl)
-    .subscribe{
+      this.http.get(this.userService.tempUrl+'/v1/post/findAllPost')
+    .subscribe(data=>{
+      if(data['status'] === 'success'){
+        this.inviList = data['data'];
+        if(this.inviList.length > 4){
+          this.data = this.inviList.slice(0,3);
+        }else {
+          this.data = this.inviList;
+        }
+      }else {
 
-  }*/
+      }
+
+    })
   }
 
-  /*data = [];
-  submitting = false;
-  user = {
-    author: 'Han Solo',
-    avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'
-  };
-  inputValue = '';
+  addInvi(){
+    this.http.post(this.userService.tempUrl+'/v1/post/addPost',
+      {
+        title: this.title,
+        creater: this.user,
+        content: this.content
+      })
+      .subscribe(data=>{
+        if(data['status'] === 'success'){
+          this.getAll();
+          this.title = '';
+          this.content = '';
+        }else {
 
-  handleSubmit(): void {
-    this.submitting = true;
-    const content = this.inputValue;
-    this.inputValue = '';
-    setTimeout(() => {
-      this.submitting = false;
-      this.data = [...this.data, {
-        ...this.user,
-        content,
-        datetime: new Date(),
-        displayTime: distanceInWords(new Date(), new Date())
-      }].map(e => {
-        return {
-          ...e,
-          displayTime: distanceInWords(new Date(), e.datetime)
-        };
-      });
-    }, 800);
-  }*/
+        }
+
+      })
+  }
 
 
   showModal(): void {
@@ -90,41 +94,93 @@ export class HomeComponent implements OnInit {
   handleOk(): void {
 
     this.isVisible = false;
-    this.http.post(this.userService.tempUrl, {
-      title: '',
-      content: '',
-      creater: '',
-    })
-      .subscribe(data =>{
+    this.addInvi();
 
-      });
+  }
+
+  openModal(data){
+    this.searhComment(data.id);
+    if(this.inviDetail.length > 0){
+      this.inviDetail = [];
+      this.inviDetail.push(data);
+    }else {
+      this.inviDetail.push(data);
+    }
+
+    let timer =setTimeout(()=>{
+        this.showModal2();
+
+      }
+    ,0)
+
   }
 
   handleCancel(): void {
 
     this.isVisible = false;
   }
+
   showModal2(): void {
-    this.detailIs = true;
+
+      this.detailIs = true;
+
   }
 
   handleOk2(): void {
 
     this.detailIs = false;
-   /* this.http.post(this.userService.tempUrl, {
-      title: '',
-      content: '',
-      creater: '',
-    })
-      .subscribe(data =>{
-
-      });*/
+    this.comment = '';
   }
 
   handleCancel2(): void {
 
     this.detailIs = false;
+    this.comment = '';
   }
 
+  logOut(){
+
+    this.storage.clear('user');
+    this.router.navigateByUrl('/login');
+
+  }
+  commentList: any[] = [];
+  searhComment(id){
+    this.http.get(this.userService.tempUrl+'/v1/post/findReplyByPost?postId='+id)
+      .subscribe(data =>{
+        if(data['status'] === 'success'){
+             this.commentList = data['data'];
+        }else {
+
+        }
+      });
+  }
+
+  addComment(){
+     this.http.post(this.userService.tempUrl+'/v1/post/addReply', {
+          post: this.inviDetail[0],
+          creater: this.user,
+          content: this.comment,
+        })
+          .subscribe(data =>{
+
+            this.searhComment(this.inviDetail[0]['id']);
+          });
+  }
+  deleteComment(data){
+    this.http.delete(this.userService.tempUrl+'/v1/post/dropReply?id='+data.id)
+      .subscribe(data =>{
+        this.searhComment(this.inviDetail[0]['id']);
+      });
+  }
+
+  deleteInvi(data){
+    this.http.delete(this.userService.tempUrl+'/v1/post/dropPost?id='+data.id, )
+      .subscribe(data =>{
+        this.getAll();
+      });
+
+  console.log(data);
+  }
 
 }
